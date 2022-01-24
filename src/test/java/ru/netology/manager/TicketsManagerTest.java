@@ -3,7 +3,10 @@ package ru.netology.manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Ticket;
+import ru.netology.domain.TicketsComparator;
 import ru.netology.repository.TicketsRepository;
+
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +23,7 @@ class TicketManagerTest {
     private Ticket testTicket7 = new Ticket(7, 8700, "VKO", "BHK", 220);
     private Ticket testTicket8 = new Ticket(8, 8800, "BHK", "VKO", 230);
     private Ticket testTicket9 = new Ticket(9, 2500, "VKO", "MRL", 130);
-    private Ticket testTicket10 = new Ticket(10, 2800, "MRL", "VKO", 140);
+    private Ticket testTicket10 = new Ticket(10, 2800, "LED", "VKO", 140);
     private Ticket ticketToAdd = new Ticket(9999, 9999, "NNN", "YYY", 2000);
 
     @BeforeEach
@@ -82,6 +85,36 @@ class TicketManagerTest {
                 testTicket3,
                 testTicket7
         };
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void shouldFindSorted() {
+        Ticket[] actual = manager.findFromToSorted("LED", "VKO", new Comparator<Ticket>() {
+            @Override
+            public int compare(Ticket o1, Ticket o2) {
+                return 0;
+            }
+        });
+        Ticket[] expected = {
+                testTicket2,
+                testTicket10
+
+        };
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void shouldFindNothing() {
+        Ticket[] actual = manager.findFromToSorted("VKO", "VKO", new Comparator<Ticket>() {
+            @Override
+            public int compare(Ticket o1, Ticket o2) {
+                return 0;
+            }
+        });
+        Ticket[] expected = {};
+
         assertArrayEquals(expected, actual);
     }
 }

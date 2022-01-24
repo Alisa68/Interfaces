@@ -2,6 +2,7 @@ package ru.netology.repository;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import ru.netology.domain.NotFoundException;
 import ru.netology.domain.Ticket;
 
 @AllArgsConstructor
@@ -20,4 +21,32 @@ public class TicketsRepository {
     public Ticket[] getAll() {
         return tickets;
     }
+
+    public Ticket findById(int id) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId() == id) {
+                return ticket;
+            }
+        }
+        return null;
+    }
+
+    public void removeById(int id) {
+        if (findById(id) == null) {
+            throw new NotFoundException("Element with id: " + id + " not found!");
+        } else {
+            int length = tickets.length - 1;
+            Ticket[] tmp = new Ticket[length];
+            int index = 0;
+            for (Ticket item : tickets) {
+                if (item.getId() != id) {
+                    tmp[index] = item;
+                    index++;
+                }
+            }
+            tickets = tmp;
+        }
+    }
+
+
 }
